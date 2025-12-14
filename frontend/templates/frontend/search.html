@@ -1,20 +1,12 @@
-<form method="post">
-    {% csrf_token %}
-    <select name="route">
-        {% for route in routes %}
-            <option value="{{ route.id }}">
-                {{ route.source }} - {{ route.destination }}
-            </option>
-        {% endfor %}
-    </select>
+<h2>Available Buses</h2>
 
-    <input type="date" name="date">
-    <button type="submit">Search</button>
-</form>
-
-{% if schedules %}
-    <h3>Available Buses</h3>
-    {% for s in schedules %}
-        <p>{{ s.bus }} | {{ s.departure_time }} | Fare: {{ s.fare }}</p>
-    {% endfor %}
-{% endif %}
+{% for s in schedules %}
+    <p>
+        Bus: {{ s.bus.name }} |
+        Route: {{ s.route }} |
+        Date: {{ s.date }} |
+        <a href="/seats/{{ s.id }}/">Select Seat</a>
+    </p>
+{% empty %}
+    <p>No schedules available</p>
+{% endfor %}

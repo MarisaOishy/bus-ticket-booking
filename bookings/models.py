@@ -3,27 +3,13 @@ from django.contrib.auth.models import User
 from schedules.models import Schedule
 from buses.models import Seat
 
-
 class Booking(models.Model):
-    user = models.ForeignKey(
-        User,
-        on_delete=models.CASCADE
-    )
-    schedule = models.ForeignKey(
-        Schedule,
-        on_delete=models.CASCADE
-    )
-    seat = models.ForeignKey(
-        Seat,
-        on_delete=models.CASCADE
-    )
-    booking_time = models.DateTimeField(
-        auto_now_add=True
-    )
-
-    class Meta:
-        # Prevent same seat being booked twice for the same schedule
-        unique_together = ('schedule', 'seat')
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    schedule = models.ForeignKey(Schedule, on_delete=models.CASCADE)
+    seats = models.ManyToManyField(Seat)
+    total_fare = models.DecimalField(max_digits=8, decimal_places=2)
+    status = models.CharField(max_length=20, default='CONFIRMED')
+    created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.user.username} | {self.schedule} | Seat {self.seat.seat_number}"
+        return f"Booking #{self.id}"

@@ -1,0 +1,9 @@
+<h2>Select Seat</h2>
+
+<p>Bus: {{ schedule.bus.name }}</p>
+
+{% for seat in seats %}
+    <button>{{ seat.seat_number }}</button>
+{% empty %}
+    <p>No seats found</p>
+{% endfor %}
